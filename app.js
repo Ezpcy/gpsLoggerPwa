@@ -11,6 +11,12 @@ document.addEventListener("DOMContentLoaded", function () {
     logData += "timestamp,latitude,longitude,altitude\n";
     logElement.textContent =
       "Started tracking...\ntimestamp,latitude,longitude,altitude\n";
+    // get permission
+    navigator.geolocation.getCurrentPosition(
+      () => {},
+      () => {}
+    );
+
     intervalId = setInterval(() => {
       navigator.geolocation.getCurrentPosition(
         (position) => {

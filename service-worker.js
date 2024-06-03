@@ -9,6 +9,17 @@ const CACHE = "gpslogger-page";
 // TODO: replace the following with the correct offline fallback page i.e.: const offlineFallbackPage = "offline.html";
 const offlineFallbackPage = "index.html";
 
+const assetsToCache = [
+  offlineFallbackPage,
+  "/icons/fire.png",
+  "/index.html",
+  "/manifest.json",
+  "/service-worker.js",
+  "/app.js",
+  "/style.css",
+  // Include other assets here
+];
+
 self.addEventListener("message", (event) => {
   if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
@@ -17,7 +28,7 @@ self.addEventListener("message", (event) => {
 
 self.addEventListener("install", async (event) => {
   event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.add(offlineFallbackPage))
+    caches.open(CACHE).then((cache) => cache.addAll(assetsToCache))
   );
 });
 
@@ -30,20 +41,23 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       (async () => {
         try {
-          const preloadResp = await event.preloadResponse;
-
-          if (preloadResp) {
-            return preloadResp;
+          const preloadResponse = await event.preloadResponse;
+          if (preloadResponse) {
+            return preloadResponse;
           }
-
-          const networkResp = await fetch(event.request);
-          return networkResp;
+          const networkResponse = await fetch(event.request);
+          return networkResponse;
         } catch (error) {
           const cache = await caches.open(CACHE);
-          const cachedResp = await cache.match(offlineFallbackPage);
-          return cachedResp;
+          return await cache.match(offlineFallbackPage);
         }
       })()
+    );
+  } else if (event.request.method === "GET") {
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        return cachedResponse || fetch(event.request);
+      })
     );
   }
 });
