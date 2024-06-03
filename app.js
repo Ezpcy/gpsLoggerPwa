@@ -30,8 +30,8 @@ document.addEventListener("DOMContentLoaded", function () {
         (error) => {
           logElement.textContent += `Error: ${error.message}\n`;
         }
-      ); // track every  1second
-    }, 1000);
+      ); // track every 30 seconds
+    }, 30000);
   });
 
   document.getElementById("stopButton").addEventListener("click", () => {
