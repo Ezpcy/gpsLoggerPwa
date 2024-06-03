@@ -4,14 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GPS Tracker PWA</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="./styles.css" />
     <link rel="manifest" href="manifest.json" />
+    <link rel="shortcut icon" href="/icons/fire (1).png" type="image/png" />
   </head>
   <body>
     <h1>GPS Tracker</h1>
     <button id="startButton">Start Tracking</button>
     <button id="stopButton">Stop Tracking</button>
     <pre id="log">GPS data will appear here...</pre>
+
     <script src="app.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+          navigator.serviceWorker.register("/service-worker.js").then(
+            function (registration) {
+              // Registration was successful
+              console.log(
+                "ServiceWorker registration successful with scope: ",
+                registration.scope
+              );
+            },
+            function (err) {
+              // registration failed :(
+              console.log("ServiceWorker registration failed: ", err);
+            }
+          );
+        });
+      }
+    </script>
   </body>
 </html>

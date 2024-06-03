@@ -1,18 +1,15 @@
 {
-  "background_color": "#ffffff",
-  "dir": "ltr",
-  "display": "standalone",
-  "name": "Simple GPS Logger",
-  "orientation": "any",
-  "scope": "/",
-  "short_name": "GPS Logger",
-  "start_url": "/index.html",
-  "theme_color": "#ffffff",
-  "id": "gpslogger",
+  "short_name": "GPS Tracker",
+  "name": "Simple GPS Tracker",
   "icons": [
     {
-      "src": "/fire.png",
+      "src": "./icons/fire.png",
+      "type": "image/png",
       "sizes": "512x512"
     }
-  ]
+  ],
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#000000"
 }
