@@ -35,12 +35,13 @@ h1 {
 }
 
 .data {
-  display: flex;
   justify-content: center;
   /* ellpisis overflow */
+  overflow: hidden;
+  text-align: center;
 }
 
-#log {
+#log #header {
   overflow: hidden;
   text-overflow: ellipsis;
   gap: 20px;
