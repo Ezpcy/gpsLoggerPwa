@@ -26,15 +26,14 @@ self.addEventListener("message", (event) => {
   }
 });
 
-self.addEventListener("install", async (event) => {
+self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(assetsToCache))
+    caches.open(CACHE).then(cache => {
+      return cache.addAll(assetsToCache);
+    })
   );
 });
 
-if (workbox.navigationPreload.isSupported()) {
-  workbox.navigationPreload.enable();
-}
 
 self.addEventListener("fetch", (event) => {
   if (event.request.mode === "navigate") {
@@ -61,3 +60,13 @@ self.addEventListener("fetch", (event) => {
     );
   }
 });
+
+self.addEventListener('sync', event => {
+  if (event.tag === 'sync-geodata') {
+    event.waitUntil(syncGeoData());
+  }
+});
+
+async function syncGeoData() {
+  // your logic to retrieve and send data to server
+}
