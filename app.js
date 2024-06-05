@@ -4,6 +4,19 @@ window.addEventListener("beforeunload", function (e) {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
+  const audio = document.getElementById("audio");
+
+  function startSilentAudio() {
+    audio
+      .play()
+      .catch((error) => console.error("Error playing silent audio:", error));
+  }
+
+  function stopSilentAudio() {
+    audio.pause();
+    audio.currentTime = 0; // Reset the time
+  }
+
   const logElement = document.getElementById("log");
   let header = document.getElementById("header");
   let logData = "";
@@ -42,7 +55,11 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   document.getElementById("startButton").addEventListener("click", () => {
+    startSilentAudio();
+    document.getElementById("startButton").style.display = "none";
+    document.getElementById("stopButton").style.display = "block";
     document.getElementById("startButton").disabled = true;
+
     if (!navigator.geolocation) {
       header.textContent = "Geolocation is not supported by your browser";
       return;
@@ -95,6 +112,9 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   document.getElementById("stopButton").addEventListener("click", () => {
+    stopSilentAudio();
+    document.getElementById("startButton").style.display = "block";
+    document.getElementById("stopButton").style.display = "none";
     document.getElementById("startButton").disabled = false;
     if (intervalId || db) {
       clearInterval(intervalId);

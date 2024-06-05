@@ -17,6 +17,7 @@ const assetsToCache = [
   "/service-worker.js",
   "/app.js",
   "/style.css",
+  "/silence.mp3",
   // Include other assets here
 ];
 
@@ -60,4 +61,21 @@ self.addEventListener("fetch", (event) => {
       })
     );
   }
+});
+
+// keep alive in background
+self.addEventListener("fetch", (event) => {
+  event.respondWith(
+    caches.open(CACHE).then((cache) => {
+      return cache.match(event.request).then((response) => {
+        return (
+          response ||
+          fetch(event.request).then((response) => {
+            cache.put(event.request, response.clone());
+            return response;
+          })
+        );
+      });
+    })
+  );
 });
